@@ -1,0 +1,17 @@
+ID: TEST_PROJECT_MN
+_schema-version: '2.1'
+description: Test Project - Manhar Narang
+version: 0.0.1
+
+modules:
+ - name: TEST_HDB_MN
+   type: hdb
+   path: TEST_HDB_MN
+   requires:
+    - name: hdi_TEST_HDB_MN
+
+resources:
+ - name: hdi_TEST_HDB_MN
+   properties:
+      hdi-container-name: ${service-name}
+   type: com.sap.xs.hdi-container

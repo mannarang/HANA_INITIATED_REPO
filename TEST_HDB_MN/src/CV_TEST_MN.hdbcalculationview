@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="TEST_PROJECT_MN.TEST_HDB_MN::CV_TEST_MN" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="Test CV by MN"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_DATA">
+    <resourceUri>TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_DATA</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews/>
+<logicalModel id="TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_DATA">
+  <attributes>
+    <attribute id="STUDENT_ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="STUDENT_ID"/>
+      <keyMapping columnObjectName="STUDENT_DATA" columnName="STUDENT_ID"/>
+    </attribute>
+    <attribute id="STUDENT_NAME" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="STUDENT_NAME"/>
+      <keyMapping columnObjectName="STUDENT_DATA" columnName="STUDENT_NAME"/>
+    </attribute>
+    <attribute id="STUDENT_AGE" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="STUDENT_AGE"/>
+      <keyMapping columnObjectName="STUDENT_DATA" columnName="STUDENT_AGE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="CC_AGE_CATEGORY" order="4" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Age Category"/>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="13">
+        <formula>IF(&quot;STUDENT_AGE&quot;&lt;15, 'JUNIOR','SENIOR')</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
