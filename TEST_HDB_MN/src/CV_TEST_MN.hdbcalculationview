@@ -1,37 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="TEST_PROJECT_MN.TEST_HDB_MN::CV_TEST_MN" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
-<descriptions defaultDescription="Test CV by MN"/>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="TEST_PROJECT_MN.TEST_HDB_MN::CV_TEST_MN" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="Test CV"/>
 <localVariables/>
 <variableMappings/>
 <dataSources>
   <DataSource id="TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_DATA">
     <resourceUri>TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_DATA</resourceUri>
   </DataSource>
+  <DataSource id="TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_MARKS">
+    <resourceUri>TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_MARKS</resourceUri>
+  </DataSource>
 </dataSources>
-<calculationViews/>
-<logicalModel id="TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_DATA">
+<calculationViews>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="C1_N" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="STUDENT_ID"/>
+      <viewAttribute id="STUDENT_NAME"/>
+      <viewAttribute id="STUDENT_AGE"/>
+      <viewAttribute id="COURSE_ID"/>
+      <viewAttribute id="COURSE_NAME"/>
+      <viewAttribute id="MARKS"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CC_AGE_CATEGORY" datatype="NVARCHAR" length="13" expressionLanguage="COLUMN_ENGINE">
+        <formula>IF(&quot;STUDENT_AGE&quot;&lt;15, 'Junior','Senior')</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <restrictedViewAttributes/>
+    <input node="TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_DATA">
+      <mapping xsi:type="Calculation:AttributeMapping" target="STUDENT_ID" source="STUDENT_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STUDENT_NAME" source="STUDENT_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STUDENT_AGE" source="STUDENT_AGE"/>
+    </input>
+    <input node="TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_MARKS">
+      <mapping xsi:type="Calculation:AttributeMapping" target="COURSE_ID" source="COURSE_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COURSE_NAME" source="COURSE_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MARKS" source="MARKS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STUDENT_ID" source="STUDENT_ID"/>
+    </input>
+    <joinAttribute name="STUDENT_ID"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Join_1">
   <attributes>
     <attribute id="STUDENT_ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="STUDENT_ID"/>
-      <keyMapping columnObjectName="STUDENT_DATA" columnName="STUDENT_ID"/>
+      <keyMapping columnObjectName="Join_1" columnName="STUDENT_ID"/>
     </attribute>
     <attribute id="STUDENT_NAME" order="2" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="STUDENT_NAME"/>
-      <keyMapping columnObjectName="STUDENT_DATA" columnName="STUDENT_NAME"/>
+      <keyMapping columnObjectName="Join_1" columnName="STUDENT_NAME"/>
     </attribute>
     <attribute id="STUDENT_AGE" order="3" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="STUDENT_AGE"/>
-      <keyMapping columnObjectName="STUDENT_DATA" columnName="STUDENT_AGE"/>
+      <keyMapping columnObjectName="Join_1" columnName="STUDENT_AGE"/>
+    </attribute>
+    <attribute id="COURSE_ID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COURSE_ID"/>
+      <keyMapping columnObjectName="Join_1" columnName="COURSE_ID"/>
+    </attribute>
+    <attribute id="COURSE_NAME" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COURSE_NAME"/>
+      <keyMapping columnObjectName="Join_1" columnName="COURSE_NAME"/>
+    </attribute>
+    <attribute id="MARKS" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MARKS"/>
+      <keyMapping columnObjectName="Join_1" columnName="MARKS"/>
+    </attribute>
+    <attribute id="CC_AGE_CATEGORY" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CC_AGE_CATEGORY"/>
+      <keyMapping columnObjectName="Join_1" columnName="CC_AGE_CATEGORY"/>
     </attribute>
   </attributes>
-  <calculatedAttributes>
-    <calculatedAttribute id="CC_AGE_CATEGORY" order="4" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Age Category"/>
-      <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="13">
-        <formula>IF(&quot;STUDENT_AGE&quot;&lt;15, 'JUNIOR','SENIOR')</formula>
-      </keyCalculation>
-      </calculatedAttribute>
-  </calculatedAttributes>
+  <calculatedAttributes/>
   <baseMeasures/>
   <calculatedMeasures/>
   <restrictedMeasures/>
@@ -40,6 +81,19 @@
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
       <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="128" y="191"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_DATA" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="-28" y="35"/>
+      <rectangleSize width="378.244140625"/>
+    </shape>
+    <shape modelObjectName="TEST_PROJECT_MN.TEST_HDB_MN::STUDENT_MARKS" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="390.6953125"/>
     </shape>
   </shapes>
 </layout>
